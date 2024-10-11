@@ -62,7 +62,7 @@ const ProjectManagement = () => {
               <tr key={project._id} className="border-b border-gray-600">
                 <td className="px-2 py-4">
                   <img
-                    src={`${project.image.slice(8)}`}
+                    src={project.image}
                     alt={project.name}
                     className="w-[50px] rounded-lg"
                   />

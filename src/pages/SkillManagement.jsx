@@ -81,7 +81,7 @@ const SkillManagement = () => {
               <td className="p-2 relative">
                 <div className="relative w-10 h-10">
                   <img
-                    src={`${skill.icon.slice(8)}`}
+                    src={skill.icon}
                     alt={skill.name}
                     className="w-full h-full rounded-lg"
                   />
