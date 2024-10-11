@@ -45,7 +45,7 @@ const SkillManagement = () => {
     >
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
         <h3 className="text-lg font-bold flex items-center gap-3">
-          Manage Technical Skills{" "}
+          Manage Skills{" "}
           <button
             className="text-green-500 hover:text-green-600 text-sm"
             title="Mark as Admin"
