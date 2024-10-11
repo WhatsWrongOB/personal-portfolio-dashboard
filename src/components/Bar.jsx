@@ -10,6 +10,7 @@ import {
   ArcElement,
 } from "chart.js";
 
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
