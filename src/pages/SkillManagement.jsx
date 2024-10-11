@@ -24,6 +24,7 @@ const SkillManagement = () => {
 
   const handleAddClick = () => {
     setactionType("add-skill");
+    setSelectedskill(null)
     setIsModalOpen(true);
   };
 
@@ -48,7 +49,7 @@ const SkillManagement = () => {
           <button
             className="text-green-500 hover:text-green-600 text-sm"
             title="Mark as Admin"
-            onClick={() => handleAddClick}
+            onClick={handleAddClick}
           >
             Add skill
             <i className="ml-2 fa-solid fa-plus text-xs"></i>

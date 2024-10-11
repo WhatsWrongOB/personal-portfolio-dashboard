@@ -25,10 +25,11 @@ const ProjectManagement = () => {
       >
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
           <h3 className="text-lg font-bold flex items-center gap-3">
-            Manage Personal Projects
+            Manage Projects
             <button
               onClick={() => {
                 setActionType("add-project");
+                setSelectedProject(null);
                 setIsModalOpen(!isModalOpen);
               }}
               className="text-green-500 hover:text-green-600 text-sm"

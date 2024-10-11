@@ -40,14 +40,14 @@ const Dashboard = () => {
 
       <div className="flex justify-between md:flex-row flex-col h-auto md:h-[400px] mb-4">
         <div className="w-full md:w-[59%] h-full mt-2 rounded-lg bg-gray-700 border border-gray-600 p-4">
-          <h3 className="text-lg font-bold mb-10">Student Admmisions</h3>
+          <h3 className="text-lg font-bold mb-10">Personal Project Reviews</h3>
           <div className="w-full flex justify-center">
             <BarGraph />
           </div>
         </div>
 
         <div className="w-full md:w-[40%] h-full mt-2 rounded-lg bg-gray-700 border border-gray-600 p-4">
-          <h3 className="text-lg font-bold mb-10">Student Application</h3>
+          <h3 className="text-lg font-bold mb-10">Technical Skills Reviews</h3>
           <div className="w-full flex justify-center h-[300px] pb-4">
             <PieGraph />
           </div>

@@ -12,6 +12,13 @@ const AppProvider = ({ children }) => {
   const [totalProjects, setTotalProjects] = useState(0);
   const [totalSkills, setTotalSkills] = useState(0);
   const [totalMessages, setTotalMessages] = useState(0);
+  const configuration = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  /*_______________________Projects CRUD_________________________*/
 
   const fetchProjects = async () => {
     try {
@@ -25,40 +32,39 @@ const AppProvider = ({ children }) => {
     }
   };
 
-  const fetchSkills = async () => {
+  const createProject = async (project) => {
     try {
-      console.log("Skill fetched");
-      const { data } = await axios.get(`${URL}/skills`);
-      if (data.success) {
-        setSkills(data.skills);
-        setTotalSkills(data.totalSkills);
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const fetchMessages = async () => {
-    try {
-      const { data } = await axios.get(`${URL}/message`);
-      if (data.success) {
-        setMessages(data.messages);
-        setTotalMessages(data.totalMessages);
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const deleteSkill = async (id) => {
-    try {
-      const { data } = await axios.delete(`${URL}/skills/${id}`);
+      const { data } = await axios.post(
+        `${URL}/projects`,
+        project,
+        configuration
+      );
       if (data.success) {
         toast.success(data.message);
-        fetchSkills();
+        fetchProjects();
       }
     } catch (error) {
-      toast.error(error.response?.data);
+      toast.error(error.response?.data.message);
+      console.log(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  };
+
+  const updateProject = async (id, project) => {
+    try {
+      const { data } = await axios.patch(
+        `${URL}/projects/${id}`,
+        project,
+        configuration
+      );
+      if (data.success) {
+        toast.success(data.message);
+        fetchProjects();
+      }
+    } catch (error) {
+      toast.error(error.response?.data.message);
       console.log(
         "Error:",
         error.response ? error.response.data : error.message
@@ -74,7 +80,7 @@ const AppProvider = ({ children }) => {
         fetchProjects();
       }
     } catch (error) {
-      toast.error(error.response?.data);
+      toast.error(error.response?.data.message);
       console.log(
         "Error:",
         error.response ? error.response.data : error.message
@@ -82,11 +88,94 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  /*_______________________Skill CRUD_________________________*/
+
+  const fetchSkills = async () => {
+    try {
+      console.log("Skill fetched");
+      const { data } = await axios.get(`${URL}/skills`);
+      if (data.success) {
+        setSkills(data.skills);
+        setTotalSkills(data.totalSkills);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const deleteSkill = async (id) => {
+    try {
+      const { data } = await axios.delete(`${URL}/skills/${id}`);
+      if (data.success) {
+        toast.success(data.message);
+        fetchSkills();
+      }
+    } catch (error) {
+      toast.error(error.response?.data.message);
+      console.log(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  };
+
+  const createSkill = async (skill) => {
+    try {
+      const { data } = await axios.post(`${URL}/skills`, skill, configuration);
+      console.log(data)
+      if (data.success) {
+        toast.success(data.message);
+        fetchSkills();
+      }
+    } catch (error) {
+      toast.error(error.response?.data.message);
+      console.log(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  };
+
+  const updateSkill = async (id, skill) => {
+    try {
+      const { data } = await axios.patch(
+        `${URL}/skills/${id}`,
+        skill,
+        configuration
+      );
+      if (data.success) {
+        toast.success(data.message);
+        fetchSkills();
+      }
+    } catch (error) {
+      toast.error(error.response?.data.message);
+      console.log(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  };
+
+  /*_______________________Messages________________________*/
+
+  const fetchMessages = async () => {
+    try {
+      const { data } = await axios.get(`${URL}/message`);
+      if (data.success) {
+        setMessages(data.messages.toReversed());
+        setTotalMessages(data.totalMessages);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  /*
+  Calling function in use effect
+  */
   useEffect(() => {
     fetchProjects();
-
     fetchSkills();
-
     fetchMessages();
   }, []);
 
@@ -94,13 +183,17 @@ const AppProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         projects,
-        skills,
-        messages,
         totalProjects,
-        totalSkills,
-        totalMessages,
-        deleteSkill,
+        updateProject,
+        createProject,
         deleteProject,
+        skills,
+        totalSkills,
+        deleteSkill,
+        createSkill,
+        updateSkill,
+        messages,
+        totalMessages,
       }}
     >
       {children}

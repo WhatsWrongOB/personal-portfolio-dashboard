@@ -12,7 +12,7 @@ const ProjectModal = ({ project, closeModal }) => {
           <div class="mt-5 md:mt-10 section-border w-[60px] xl:w-[80px] h-[60px] xl:h-[80px] overflow-hidden rounded-2xl">
             <img
               class="w-full h-full"
-              src={`${project.image.slice(8)}`}
+              src={project.image}
               alt={project.name}
             />
           </div>
