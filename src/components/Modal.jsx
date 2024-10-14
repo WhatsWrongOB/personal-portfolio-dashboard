@@ -11,6 +11,12 @@ const Modal = ({ data, onClose, type, accept }) => {
     link: data?.link || "",
     description: data?.description || "",
   });
+  const [projectImagePreview, setProjectImagePreview] = useState(
+    data?.image || ""
+  );
+  const [skillImagePreview, setSkillImagePreview] = useState(
+    data?.icon || ""
+  );
 
   const [skillData, setSkillData] = useState({
     icon: data?.icon || "",
@@ -20,25 +26,63 @@ const Modal = ({ data, onClose, type, accept }) => {
   });
 
   const handleProjectChange = (e) => {
-    const { name, value } = e.target;
-    setProjectData({ ...projectData, [name]: value });
+    const { name, value, files } = e.target;
+    if (name === "image" && files && files[0]) {
+      const imageFile = files[0];
+      const url = URL.createObjectURL(imageFile);
+      setProjectImagePreview(url);
+      setProjectData({ ...projectData, [name]: imageFile });
+    } else {
+      setProjectData({ ...projectData, [name]: value });
+    }
   };
 
   const handleSkillChange = (e) => {
-    const { name, value } = e.target;
-    setSkillData({ ...skillData, [name]: value });
+    const { name, value, files } = e.target;
+    if (name === "icon" && files && files[0]) {
+      const imageFile = files[0];
+      const url = URL.createObjectURL(imageFile);
+      setSkillImagePreview(url);
+      setSkillData({ ...skillData, [name]: imageFile });
+    } else {
+      setSkillData({ ...skillData, [name]: value });
+    }
+  
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const formData = new FormData();
+
+
     if (type === "edit-project") {
+      formData.append("image", projectData.image);
+      formData.append("name", projectData.name);
+      formData.append("tech", projectData.tech);
+      formData.append("type", projectData.type);
+      formData.append("link", projectData.link);
+      formData.append("description", projectData.description);
       updateProject(data._id, projectData);
     } else if (type === "edit-skill") {
-      updateSkill(data._id ,skillData);
+      formData.append("icon", skillData.icon);
+      formData.append("name", skillData.name);
+      formData.append("proficiency", skillData.proficiency);
+      formData.append("description", skillData.description);
+      updateSkill(data._id, skillData);
     } else if (type === "add-project") {
-      createProject(projectData);
+      formData.append("image", projectData.image);
+      formData.append("name", projectData.name);
+      formData.append("tech", projectData.tech);
+      formData.append("type", projectData.type);
+      formData.append("link", projectData.link);
+      formData.append("description", projectData.description);
+      createProject(formData);
     } else if (type === "add-skill") {
+      formData.append("icon", skillData.icon);
+      formData.append("name", skillData.name);
+      formData.append("proficiency", skillData.proficiency);
+      formData.append("description", skillData.description);
       createSkill(skillData);
     }
     onClose();
@@ -82,23 +126,29 @@ const Modal = ({ data, onClose, type, accept }) => {
           {type === "edit-project" || type === "add-project" ? (
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Project form */}
-              <div>
+              <div className="flex items-center justify-between">
                 <label
                   className="block text-sm font-semibold mb-1"
                   htmlFor="image"
                 >
-                  Image Path
+                  Image
+                  <input
+                    name="image"
+                    type="file"
+                    onChange={handleProjectChange}
+                    placeholder="Select Image"
+                    required
+                    className="w-1/2 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
                 </label>
-                <input
-                  id="image"
-                  name="image"
-                  type="text"
-                  value={projectData.image}
-                  onChange={handleProjectChange}
-                  placeholder="Enter Image Path"
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+
+                {projectImagePreview && (
+                  <img
+                    className="w-[60px] h-[60px] rounded-xl"
+                    src={projectImagePreview}
+                    alt={projectData?.name}
+                  />
+                )}
               </div>
               <div>
                 <label
@@ -204,22 +254,28 @@ const Modal = ({ data, onClose, type, accept }) => {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Skill form */}
-              <div>
+              <div className="flex items-center justify-between">
                 <label
                   className="block text-sm font-semibold mb-1"
                   htmlFor="icon"
                 >
-                  Icon Path
-                </label>
+                  Icon
                 <input
                   name="icon"
-                  type="text"
-                  value={skillData.icon}
+                  type="file"
                   onChange={handleSkillChange}
                   placeholder="Enter Icon Path"
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                </label>
+                 {skillImagePreview && (
+                  <img
+                    className="w-[60px] h-[60px] rounded-xl"
+                    src={skillImagePreview}
+                    alt={skillData?.name}
+                  />
+                )}
               </div>
               <div>
                 <label

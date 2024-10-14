@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
-  const URL = import.meta.env.VITE_API_URL;
+  const URL = import.meta.env.VITE_API_LOCAL;
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -14,7 +14,7 @@ const AppProvider = ({ children }) => {
   const [totalMessages, setTotalMessages] = useState(0);
   const configuration = {
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "multipart/form-data",
     },
   };
 
