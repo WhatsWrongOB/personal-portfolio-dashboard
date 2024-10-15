@@ -25,7 +25,6 @@ const Modal = ({ data, onClose, type, accept }) => {
   };
 
   const handleSkillChange = (e) => {
-
     const { name, value } = e.target;
     setSkillData({ ...skillData, [name]: value });
   };
@@ -45,8 +44,6 @@ const Modal = ({ data, onClose, type, accept }) => {
     onClose();
   };
   
-  console.log(skillData)
-
 
   return (
     <div
@@ -86,8 +83,8 @@ const Modal = ({ data, onClose, type, accept }) => {
           {type === "edit-project" || type === "add-project" ? (
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Project form */}
-              <div>
-                <label
+               <div>
+               <label
                   className="block text-sm font-semibold mb-1"
                   htmlFor="image"
                 >

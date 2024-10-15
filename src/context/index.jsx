@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
 const AppContext = createContext();
@@ -12,11 +12,42 @@ const AppProvider = ({ children }) => {
   const [totalProjects, setTotalProjects] = useState(0);
   const [totalSkills, setTotalSkills] = useState(0);
   const [totalMessages, setTotalMessages] = useState(0);
+  const [notificationMessage, setNotificationMessage] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+
   const configuration = {
     headers: {
       "Content-Type": "application/json",
     },
   };
+
+  const handleNotification = useCallback((message) => {
+    setNotificationMessage((prev) => [...prev, message]);
+    setUnreadCount((prevCout) => prevCout + 1);
+    toast.success(message);
+  }, []);
+
+  useEffect(() => {
+    const savedNotifications =
+      JSON.parse(localStorage.getItem("notificationMessages")) || [];
+     const unreadCount = localStorage.getItem("unreadCount")
+    setNotificationMessage(savedNotifications);
+    setUnreadCount(unreadCount)
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "notificationMessages",
+      JSON.stringify(notificationMessage)
+    );
+  }, [notificationMessage]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "unreadCount",
+      unreadCount
+    )
+  }, [unreadCount])
 
   /*_______________________Projects CRUD_________________________*/
 
@@ -28,6 +59,7 @@ const AppProvider = ({ children }) => {
         setTotalProjects(data.totalProjects);
       }
     } catch (error) {
+      toast.error("Failed to fetch projects");
       console.log(error.message);
     }
   };
@@ -40,15 +72,12 @@ const AppProvider = ({ children }) => {
         configuration
       );
       if (data.success) {
-        toast.success(data.message);
+        handleNotification(`${project.name} created successfully`);
         fetchProjects();
       }
     } catch (error) {
-      toast.error(error.response?.data.message);
-      console.log(
-        "Error:",
-        error.response ? error.response.data : error.message
-      );
+      toast.error(error.response?.data.message || "Error creating project");
+      console.log("Error:", error.response ? error.response.data : error.message);
     }
   };
 
@@ -60,15 +89,12 @@ const AppProvider = ({ children }) => {
         configuration
       );
       if (data.success) {
-        toast.success(data.message);
+        handleNotification(`${project.name} updated successfully ✨`);
         fetchProjects();
       }
     } catch (error) {
-      toast.error(error.response?.data.message);
-      console.log(
-        "Error:",
-        error.response ? error.response.data : error.message
-      );
+      toast.error(error.response?.data.message || "Error updating project");
+      console.log("Error:", error.response ? error.response.data : error.message);
     }
   };
 
@@ -76,15 +102,12 @@ const AppProvider = ({ children }) => {
     try {
       const { data } = await axios.delete(`${URL}/projects/${id}`);
       if (data.success) {
-        toast.success(data.message);
+        handleNotification("Project deleted successfully 🗑️");
         fetchProjects();
       }
     } catch (error) {
-      toast.error(error.response?.data.message);
-      console.log(
-        "Error:",
-        error.response ? error.response.data : error.message
-      );
+      toast.error(error.response?.data.message || "Error deleting project");
+      console.log("Error:", error.response ? error.response.data : error.message);
     }
   };
 
@@ -92,48 +115,27 @@ const AppProvider = ({ children }) => {
 
   const fetchSkills = async () => {
     try {
-      console.log("Skill fetched");
       const { data } = await axios.get(`${URL}/skills`);
       if (data.success) {
         setSkills(data.skills);
         setTotalSkills(data.totalSkills);
       }
     } catch (error) {
+      toast.error("Failed to fetch skills");
       console.log(error.message);
-    }
-  };
-
-  const deleteSkill = async (id) => {
-    try {
-      const { data } = await axios.delete(`${URL}/skills/${id}`);
-      if (data.success) {
-        toast.success(data.message);
-        fetchSkills();
-      }
-    } catch (error) {
-      toast.error(error.response?.data.message);
-      console.log(
-        "Error:",
-        error.response ? error.response.data : error.message
-      );
     }
   };
 
   const createSkill = async (skill) => {
     try {
-      console.log("APO",skill)
       const { data } = await axios.post(`${URL}/skills`, skill, configuration);
-      console.log(data)
       if (data.success) {
-        toast.success(data.message);
+        handleNotification(`${skill.name} created successfully 🎉`);
         fetchSkills();
       }
     } catch (error) {
-      toast.error(error.response?.data.message);
-      console.log(
-        "Error:",
-        error.response ? error.response.data : error.message
-      );
+      toast.error(error.response?.data.message || "Error creating skill");
+      console.log("Error:", error.response ? error.response.data : error.message);
     }
   };
 
@@ -145,15 +147,25 @@ const AppProvider = ({ children }) => {
         configuration
       );
       if (data.success) {
-        toast.success(data.message);
+        handleNotification(`${skill.name} updated successfully ✨`);
         fetchSkills();
       }
     } catch (error) {
-      toast.error(error.response?.data.message);
-      console.log(
-        "Error:",
-        error.response ? error.response.data : error.message
-      );
+      toast.error(error.response?.data.message || "Error updating skill");
+      console.log("Error:", error.response ? error.response.data : error.message);
+    }
+  };
+
+  const deleteSkill = async (id) => {
+    try {
+      const { data } = await axios.delete(`${URL}/skills/${id}`);
+      if (data.success) {
+        handleNotification("Skill deleted successfully 🗑️");
+        fetchSkills();
+      }
+    } catch (error) {
+      toast.error(error.response?.data.message || "Error deleting skill");
+      console.log("Error:", error.response ? error.response.data : error.message);
     }
   };
 
@@ -167,13 +179,12 @@ const AppProvider = ({ children }) => {
         setTotalMessages(data.totalMessages);
       }
     } catch (error) {
+      toast.error("Failed to fetch messages");
       console.log(error.message);
     }
   };
 
-  /*
-  Calling function in use effect
-  */
+  // Calling function in useEffect
   useEffect(() => {
     fetchProjects();
     fetchSkills();
@@ -195,6 +206,10 @@ const AppProvider = ({ children }) => {
         updateSkill,
         messages,
         totalMessages,
+        notificationMessage,
+        setNotificationMessage,
+        setUnreadCount,
+        unreadCount,
       }}
     >
       {children}
@@ -205,15 +220,3 @@ const AppProvider = ({ children }) => {
 const useStore = () => useContext(AppContext);
 
 export { AppProvider, useStore };
-
-// "icon":"./assets/images/sass.svg",
-// "name": "sdfgh",
-// "description":"Experienced in using SASS for writing maintainable and reusable styles",
-// "proficiency":"70"
-
-// "image": "./assets/images/project-2.png",
-// "name": "📚 Check",
-// "type": "Web Development",
-// "tech": "Node.js, Express, MongoDB",
-// "description": "🔧 Built the backend of a Learning Management System (LMS) using modern technologies.",
-// "link": "https://github.com/WhatsWrongOB/lms-server-typescript"
