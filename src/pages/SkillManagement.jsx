@@ -94,7 +94,7 @@ const SkillManagement = () => {
               <td className="p-2">{skill.name}</td>
               <td className="p-2">{skill.description.slice(0, 45) + "...."}</td>
               <td className="p-2">{skill.proficiency} %</td>
-              <td className="p-2 pl-4 pt-4 flex gap-5 items-center">
+              <td className="p-2 pl-4 flex gap-5 items-center">
                 <button
                   className="text-blue-500 hover:text-blue-700"
                   title="Mark as Admin"
