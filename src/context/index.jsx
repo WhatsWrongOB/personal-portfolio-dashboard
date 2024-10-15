@@ -1,11 +1,18 @@
 import axios from "axios";
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { toast } from "react-hot-toast";
 
 const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
   const URL = import.meta.env.VITE_API_URL;
+  const [loading, setLoading] = useState(false);
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -15,8 +22,16 @@ const AppProvider = ({ children }) => {
   const [notificationMessage, setNotificationMessage] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
+  const useGetToken = () => {
+    const token = localStorage.getItem("token");
+    console.log(token)
+    if (!token) return null;
+    return token;
+  };
+  const token = useGetToken();
   const configuration = {
     headers: {
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
   };
@@ -30,9 +45,9 @@ const AppProvider = ({ children }) => {
   useEffect(() => {
     const savedNotifications =
       JSON.parse(localStorage.getItem("notificationMessages")) || [];
-     const unreadCount = localStorage.getItem("unreadCount")
+    const unreadCount = localStorage.getItem("unreadCount");
     setNotificationMessage(savedNotifications);
-    setUnreadCount(unreadCount)
+    setUnreadCount(unreadCount);
   }, []);
 
   useEffect(() => {
@@ -43,11 +58,33 @@ const AppProvider = ({ children }) => {
   }, [notificationMessage]);
 
   useEffect(() => {
-    localStorage.setItem(
-      "unreadCount",
-      unreadCount
-    )
-  }, [unreadCount])
+    localStorage.setItem("unreadCount", unreadCount);
+  }, [unreadCount]);
+
+  /*_______________________Login_________________________*/
+
+  const login = async (credentials) => {
+    try {
+      setLoading(true);
+      const { data } = await axios.post(
+        `${URL}/login`,
+        credentials,
+        configuration
+      );
+      if (data.success) {
+        localStorage.setItem("token", data.token);
+        return data.success;
+      }
+    } catch (error) {
+      toast.error(error.response?.data.message || "Internal Server Error");
+      console.log(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   /*_______________________Projects CRUD_________________________*/
 
@@ -59,7 +96,6 @@ const AppProvider = ({ children }) => {
         setTotalProjects(data.totalProjects);
       }
     } catch (error) {
-      toast.error("Failed to fetch projects");
       console.log(error.message);
     }
   };
@@ -77,7 +113,10 @@ const AppProvider = ({ children }) => {
       }
     } catch (error) {
       toast.error(error.response?.data.message || "Error creating project");
-      console.log("Error:", error.response ? error.response.data : error.message);
+      console.log(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -94,7 +133,10 @@ const AppProvider = ({ children }) => {
       }
     } catch (error) {
       toast.error(error.response?.data.message || "Error updating project");
-      console.log("Error:", error.response ? error.response.data : error.message);
+      console.log(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -107,7 +149,10 @@ const AppProvider = ({ children }) => {
       }
     } catch (error) {
       toast.error(error.response?.data.message || "Error deleting project");
-      console.log("Error:", error.response ? error.response.data : error.message);
+      console.log(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -121,7 +166,6 @@ const AppProvider = ({ children }) => {
         setTotalSkills(data.totalSkills);
       }
     } catch (error) {
-      toast.error("Failed to fetch skills");
       console.log(error.message);
     }
   };
@@ -135,7 +179,10 @@ const AppProvider = ({ children }) => {
       }
     } catch (error) {
       toast.error(error.response?.data.message || "Error creating skill");
-      console.log("Error:", error.response ? error.response.data : error.message);
+      console.log(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -152,7 +199,10 @@ const AppProvider = ({ children }) => {
       }
     } catch (error) {
       toast.error(error.response?.data.message || "Error updating skill");
-      console.log("Error:", error.response ? error.response.data : error.message);
+      console.log(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -165,7 +215,10 @@ const AppProvider = ({ children }) => {
       }
     } catch (error) {
       toast.error(error.response?.data.message || "Error deleting skill");
-      console.log("Error:", error.response ? error.response.data : error.message);
+      console.log(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -179,21 +232,24 @@ const AppProvider = ({ children }) => {
         setTotalMessages(data.totalMessages);
       }
     } catch (error) {
-      toast.error("Failed to fetch messages");
       console.log(error.message);
     }
   };
 
   // Calling function in useEffect
   useEffect(() => {
-    fetchProjects();
-    fetchSkills();
-    fetchMessages();
-  }, []);
+    if (token) {
+      fetchProjects();
+      fetchSkills();
+      fetchMessages();
+    }
+  }, [login]);
 
   return (
     <AppContext.Provider
       value={{
+        login,
+        loading,
         projects,
         totalProjects,
         updateProject,

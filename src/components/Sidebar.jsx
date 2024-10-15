@@ -1,14 +1,20 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import menu from "/menu.svg";
 import { useStore } from "../context";
+import toast from "react-hot-toast";
 
 const Sidebar = () => {
-  const { notificationMessage,setNotificationMessage, unreadCount , setUnreadCount} = useStore();
+  const {
+    notificationMessage,
+    setNotificationMessage,
+    unreadCount,
+    setUnreadCount,
+  } = useStore();
   const [isOpen, setIsOpen] = useState(false);
   const [notification, setNotification] = useState(false);
   const location = useLocation();
-  
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     if (notification) {
@@ -51,7 +57,9 @@ const Sidebar = () => {
 
         <div
           className={`absolute right-0 w-[220px] h-[220px] border border-solid border-gray-600 rounded-lg bg-[#131f38] flex justify-center ${
-            notificationMessage.length === 0 ? "items-center justify-center" : ""
+            notificationMessage.length === 0
+              ? "items-center justify-center"
+              : ""
           } ${notification ? "flex" : "hidden"} `}
         >
           {notificationMessage.length === 0 ? (
@@ -61,12 +69,20 @@ const Sidebar = () => {
             </div>
           ) : (
             <div id="overflow" className="overflow-y-auto w-full">
-              <p onClick={() => setNotificationMessage([])} className="text-[0.7rem] text-right pr-5 py-1 border border-[#131f38] border-b-gray-700 sticky top-0">clear all</p>
-              {
-                notificationMessage?.reverse().map((item, i) => (
-                  <p key={i} className="text-xs p-2 border border-[#131f38] border-b-gray-700">{item}</p>
-                ))
-              }
+              <p
+                onClick={() => setNotificationMessage([])}
+                className="text-[0.7rem] text-right pr-5 py-1 border border-[#131f38] border-b-gray-700 sticky top-0"
+              >
+                clear all
+              </p>
+              {notificationMessage?.reverse().map((item, i) => (
+                <p
+                  key={i}
+                  className="text-xs p-2 border border-[#131f38] border-b-gray-700"
+                >
+                  {item}
+                </p>
+              ))}
             </div>
           )}
         </div>
@@ -87,9 +103,9 @@ const Sidebar = () => {
         <ul className="space-y-4">
           <li>
             <Link
-              to="/"
+              to="/dashboard"
               className={`block text-[0.93rem] p-2 rounded hover:bg-gray-600 pl-3 ${
-                isActive("/") ? "border-l-[6px] border-[#3f7cd7]" : ""
+                isActive("/dashboard") ? "border-l-[6px] border-[#3f7cd7]" : ""
               }`}
             >
               <i className="fa-solid fa-table-columns mr-3"></i>
@@ -99,9 +115,11 @@ const Sidebar = () => {
           <p className="text-sm text-gray-400">Management</p>
           <li>
             <Link
-              to="/projects"
+              to="/dashboard/projects"
               className={`block text-[0.93rem] p-2 rounded hover:bg-gray-600 pl-3 ${
-                isActive("/projects") ? "border-l-[6px] border-[#3f7cd7]" : ""
+                isActive("/dashboard/projects")
+                  ? "border-l-[6px] border-[#3f7cd7]"
+                  : ""
               }`}
             >
               <i className="fa-solid fa-people-roof mr-3"></i>
@@ -110,9 +128,11 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/skills"
+              to="/dashboard/skills"
               className={`block text-[0.93rem] p-2 rounded hover:bg-gray-600 pl-3 ${
-                isActive("/skills") ? "border-l-[6px] border-[#3f7cd7]" : ""
+                isActive("/dashboard/skills")
+                  ? "border-l-[6px] border-[#3f7cd7]"
+                  : ""
               }`}
             >
               <i className="fa-solid fa-user mr-2"></i>
@@ -122,9 +142,11 @@ const Sidebar = () => {
           <p className="text-sm text-gray-400">Analytics</p>
           <li>
             <Link
-              to="/report"
+              to="/dashboard/report"
               className={`block text-[0.93rem] p-2 rounded hover:bg-gray-600 pl-3 ${
-                isActive("/report") ? "border-l-[6px] border-[#3f7cd7]" : ""
+                isActive("/dashboard/report")
+                  ? "border-l-[6px] border-[#3f7cd7]"
+                  : ""
               }`}
             >
               <i className="fa-solid fa-flag mr-3"></i>
@@ -133,9 +155,11 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/settings"
+              to="/dashboard"
               className={`block text-[0.93rem] p-2 rounded hover:bg-gray-600 pl-3 ${
-                isActive("/settings") ? "border-l-[6px] border-[#3f7cd7]" : ""
+                isActive("/dashboard")
+                  ? "border-l-[6px] border-[#3f7cd7]"
+                  : ""
               }`}
             >
               <i className="fa-solid fa-gear mr-3"></i>
@@ -143,15 +167,17 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link
-              to="/logout"
-              className={`block text-[0.93rem] p-2 rounded hover:bg-gray-600 pl-3 ${
-                isActive("/logout") ? "border-l-[6px] border-[#3f7cd7]" : ""
-              }`}
+            <div
+              className="block text-[0.93rem] p-2 rounded hover:bg-gray-600 pl-3"
+              onClick={() => {
+                localStorage.removeItem("token");
+                navigate("/");
+                toast.success("logged out successful");
+              }}
             >
               <i className="fa-solid fa-right-from-bracket mr-3"></i>
               Logout
-            </Link>
+            </div>
           </li>
         </ul>
 
