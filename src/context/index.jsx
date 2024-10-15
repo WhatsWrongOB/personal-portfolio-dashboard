@@ -121,6 +121,7 @@ const AppProvider = ({ children }) => {
 
   const createSkill = async (skill) => {
     try {
+      console.log("APO",skill)
       const { data } = await axios.post(`${URL}/skills`, skill, configuration);
       console.log(data)
       if (data.success) {
