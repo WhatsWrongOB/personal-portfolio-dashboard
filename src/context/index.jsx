@@ -4,6 +4,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { toast } from "react-hot-toast";
@@ -24,10 +25,47 @@ const AppProvider = ({ children }) => {
 
   const useGetToken = () => {
     const token = localStorage.getItem("token");
-    console.log(token)
     if (!token) return null;
     return token;
   };
+
+  function getOSAndBrowser() {
+    const userAgent = navigator.userAgent;
+    let os = "Unknown OS";
+    let browser = "Unknown Browser";
+  
+    if (/Windows/i.test(userAgent)) {
+      os = "Windows";
+    } else if (/Macintosh/i.test(userAgent)) {
+      os = "Mac OS";
+    } else if (/Linux/i.test(userAgent)) {
+      os = "Linux";
+    } else if (/Android/i.test(userAgent)) {
+      os = "Android";
+    } else if (/iPhone/i.test(userAgent)) {
+      os = "iOS (iPhone)";
+    } else if (/iPad/i.test(userAgent)) {
+      os = "iOS (iPad)";
+    }
+  
+    if (/Chrome/i.test(userAgent)) {
+      browser = "Chrome";
+    } else if (/Firefox/i.test(userAgent)) {
+      browser = "Firefox";
+    } else if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)) {
+      browser = "Safari";
+    } else if (/MSIE/i.test(userAgent) || /Trident/i.test(userAgent)) {
+      browser = "Internet Explorer";
+    } else if (/Edge/i.test(userAgent)) {
+      browser = "Edge";
+    }
+  
+    return `${os} - ${browser}`;
+  }
+  
+  console.log(); 
+  
+
   const token = useGetToken();
   const configuration = {
     headers: {
@@ -73,6 +111,13 @@ const AppProvider = ({ children }) => {
       );
       if (data.success) {
         localStorage.setItem("token", data.token);
+        const now = new Date();
+        const formattedDate = now.toLocaleString("en-US");
+        setNotificationMessage([
+          ...notificationMessage,
+        `🔑 Login observed on ${formattedDate} from a device using ${getOSAndBrowser()} 🌐`
+        ]);
+        setUnreadCount((prev) => prev + 1);
         return data.success;
       }
     } catch (error) {
@@ -243,7 +288,7 @@ const AppProvider = ({ children }) => {
       fetchSkills();
       fetchMessages();
     }
-  }, [login]);
+  }, [token]);
 
   return (
     <AppContext.Provider

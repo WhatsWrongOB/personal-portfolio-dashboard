@@ -48,7 +48,7 @@ const Login = () => {
 
   return (
     <div className="bg-gray-900 flex items-center justify-center h-screen">
-      <div className="bg-gray-800 shadow-lg rounded-lg p-8 w-[95%]  sm:max-w-[400px] relative">
+      <div className="bg-gray-800 shadow-lg rounded-lg p-8 w-[95%] h-[500px] sm:max-w-[400px] relative">
         {/* Profile Image */}
         <div className="flex justify-center mb-4">
           <img
@@ -82,7 +82,6 @@ const Login = () => {
                 onChange={handleInputChange}
                 className="w-full text-sm text-gray-300 bg-gray-800 focus:outline-none"
                 required
-                autoComplete="off"
               />
             </div>
           </div>
