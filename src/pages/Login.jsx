@@ -3,10 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useStore } from "../context";
 import toast from "react-hot-toast";
+import { useGetToken } from "../utils";
 
 const Login = () => {
   const { login, loading } = useStore();
   const navigate = useNavigate();
+
+  const token = useGetToken();
+
+  if (token) {
+    navigate("/dashboard");
+  }
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
