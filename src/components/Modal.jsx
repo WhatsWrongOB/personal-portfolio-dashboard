@@ -11,13 +11,6 @@ const Modal = ({ data, onClose, type, accept }) => {
     link: data?.link || "",
     description: data?.description || "",
   });
-<<<<<<< HEAD
-  const [projectImagePreview, setProjectImagePreview] = useState(
-    data?.image || ""
-  );
-  const [skillImagePreview, setSkillImagePreview] = useState(data?.icon || "");
-=======
->>>>>>> parent of ac2abd7 (add image func)
 
   const [skillData, setSkillData] = useState({
     icon: data?.icon || "",
@@ -32,60 +25,13 @@ const Modal = ({ data, onClose, type, accept }) => {
   };
 
   const handleSkillChange = (e) => {
-<<<<<<< HEAD
-    const { name, value, files } = e.target;
-    if (name === "icon" && files && files[0]) {
-      const imageFile = files[0];
-      const url = URL.createObjectURL(imageFile);
-      setSkillImagePreview(url);
-      setSkillData({ ...skillData, [name]: imageFile });
-    } else {
-      setSkillData({ ...skillData, [name]: value });
-    }
-=======
+
     const { name, value } = e.target;
     setSkillData({ ...skillData, [name]: value });
->>>>>>> parent of ac2abd7 (add image func)
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-<<<<<<< HEAD
-  
-    if (type === "edit-project") {
-      const formData = new FormData();
-      formData.append("image", projectData.image);
-      formData.append("name", projectData.name);
-      formData.append("tech", projectData.tech);
-      formData.append("type", projectData.type);
-      formData.append("link", projectData.link);
-      formData.append("description", projectData.description);
-      updateProject(data._id, formData); 
-    } else if (type === "edit-skill") {
-      const formData = new FormData();
-      formData.append("icon", skillData.icon);
-      formData.append("name", skillData.name);
-      formData.append("proficiency", skillData.proficiency);
-      formData.append("description", skillData.description);
-      updateSkill(data._id, formData); 
-    } else if (type === "add-project") {
-      const formData = new FormData();
-      formData.append("image", projectData.image);
-      formData.append("name", projectData.name);
-      formData.append("tech", projectData.tech);
-      formData.append("type", projectData.type);
-      formData.append("link", projectData.link);
-      formData.append("description", projectData.description);
-      console.log(formData);
-      createProject(formData);
-    } else if (type === "add-skill") {
-      const formData = new FormData();
-      formData.append("icon", skillData.icon);
-      formData.append("name", skillData.name);
-      formData.append("proficiency", skillData.proficiency);
-      formData.append("description", skillData.description);
-      createSkill(formData);
-=======
 
     if (type === "edit-project") {
       updateProject(data._id, projectData);
@@ -95,7 +41,6 @@ const Modal = ({ data, onClose, type, accept }) => {
       createProject(projectData);
     } else if (type === "add-skill") {
       createSkill(skillData);
->>>>>>> parent of ac2abd7 (add image func)
     }
     onClose();
   };
@@ -146,18 +91,8 @@ const Modal = ({ data, onClose, type, accept }) => {
                   className="block text-sm font-semibold mb-1"
                   htmlFor="image"
                 >
-<<<<<<< HEAD
-                  Image
-                  <input
-                    name="image"
-                    type="file"
-                    onChange={handleProjectChange}
-                    placeholder="Select Image"
-                    className="w-1/2 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-=======
+
                   Image Path
->>>>>>> parent of ac2abd7 (add image func)
                 </label>
                 <input
                   id="image"
@@ -279,24 +214,7 @@ const Modal = ({ data, onClose, type, accept }) => {
                   className="block text-sm font-semibold mb-1"
                   htmlFor="icon"
                 >
-<<<<<<< HEAD
-                  Icon
-                  <input
-                    name="icon"
-                    type="file"
-                    onChange={handleSkillChange}
-                    placeholder="Enter Icon Path"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </label>
-                {skillImagePreview && (
-                  <img
-                    className="w-[60px] h-[60px] rounded-xl"
-                    src={skillImagePreview}
-                    alt={skillData?.name}
-                  />
-                )}
-=======
+
                   Icon Path
                 </label>
                 <input
@@ -308,7 +226,6 @@ const Modal = ({ data, onClose, type, accept }) => {
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
->>>>>>> parent of ac2abd7 (add image func)
               </div>
               <div>
                 <label
