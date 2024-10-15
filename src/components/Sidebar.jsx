@@ -154,19 +154,6 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link
-              to="/dashboard"
-              className={`block text-[0.93rem] p-2 rounded hover:bg-gray-600 pl-3 ${
-                isActive("/dashboard")
-                  ? "border-l-[6px] border-[#3f7cd7]"
-                  : ""
-              }`}
-            >
-              <i className="fa-solid fa-gear mr-3"></i>
-              Settings
-            </Link>
-          </li>
-          <li>
             <div
               className="block text-[0.93rem] p-2 rounded hover:bg-gray-600 pl-3"
               onClick={() => {
