@@ -76,6 +76,7 @@ const Login = () => {
               {/* Email Icon */}
               <input
                 type="email"
+                id="email"
                 placeholder="Enter your email"
                 value={formData.email}
                 onChange={handleInputChange}
