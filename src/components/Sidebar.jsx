@@ -50,7 +50,7 @@ const Sidebar = () => {
         ></i>
 
         {unreadCount > 0 && (
-          <span className="absolute top-[-5px] right-[-5px] bg-red-500 text-white text-xs rounded-full px-2">
+          <span className="absolute top-[-8px] right-[-5px] bg-red-500 text-white text-xs rounded-full px-2">
             {unreadCount}
           </span>
         )}
