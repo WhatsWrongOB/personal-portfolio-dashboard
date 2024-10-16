@@ -33,9 +33,14 @@ function getOSAndBrowser() {
 }
 
 const useGetToken = () => {
-  const  user  = JSON.parse(localStorage.getItem("token"));
-  if (!user.token) return null;
-  return user.token;
+  try {
+    const user = JSON.parse(localStorage.getItem("token"));
+    if (!user) return null;
+    return user.token;
+  } catch (error) {
+    console.log(error.message);
+    return null;
+  }
 };
 
 export { useGetToken, getOSAndBrowser };
