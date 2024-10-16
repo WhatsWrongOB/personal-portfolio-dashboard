@@ -24,7 +24,7 @@ const AppProvider = ({ children }) => {
   const [unreadCount, setUnreadCount] = useState(0);
 
 
-  const token = useGetToken();
+  const {token} = useGetToken();
   const configuration = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -68,7 +68,7 @@ const AppProvider = ({ children }) => {
         configuration
       );
       if (data.success) {
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("token", JSON.stringify(data.user));
         const now = new Date();
         const formattedDate = now.toLocaleString("en-US");
         setNotificationMessage([
