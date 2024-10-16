@@ -24,7 +24,7 @@ const AppProvider = ({ children }) => {
   const [unreadCount, setUnreadCount] = useState(0);
 
 
-  const {token} = useGetToken();
+  const token = useGetToken();
   const configuration = {
     headers: {
       Authorization: `Bearer ${token}`,
