@@ -8,7 +8,7 @@ const RootApp = lazy(() => import("./app"));
 const App = () => {
   return (
     <Router>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<Loader/>}>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/dashboard/*" element={<RootApp />} />

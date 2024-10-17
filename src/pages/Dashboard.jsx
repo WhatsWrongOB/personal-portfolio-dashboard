@@ -2,6 +2,7 @@ import BarGraph from "../components/Bar";
 import PieGraph from "../components/Pie";
 import InfoCard from "../components/InfoCard";
 import { useStore } from "../context";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const { totalProjects, totalSkills, totalMessages, messages } = useStore();
@@ -58,7 +59,12 @@ const Dashboard = () => {
         id="overflow"
         className="w-full mt-2 rounded-lg bg-gray-700 border border-gray-600 p-4 overflow-auto"
       >
-        <h3 className="text-lg font-bold mb-4">User Messages</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-bold">User Messages </h3>
+          <Link className="text-sm ml-2 underline" to="/dashboard/report">
+            view all
+          </Link>{" "}
+        </div>
         <div className="space-y-4">
           {messages?.slice(0, 3).map((item) => (
             <div key={item._id} className="p-3 bg-gray-800 rounded-lg">

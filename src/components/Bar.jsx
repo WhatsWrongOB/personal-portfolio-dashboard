@@ -23,13 +23,13 @@ ChartJS.register(
 
 const BarGraph = () => {
   const data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: ["Project A", "Project B", "Project C", "Project D","Project A", "Project B",],
     datasets: [
       {
-        label: "Sales",
-        data: [10, 20, 10, 50, 30, 80, 10, 6, 45, 97, 80, 10, 6, 45, 97],
-        backgroundColor: "rgba(75,192,192,0.6)",
-        borderColor: "rgba(75,192,192,1)",
+        label: "Completion Rate (%)",
+        data: [10, 20, 10, 50, 30, 80, 10, 6, 45, 97, 80, 10, 6, 45, 97], 
+        backgroundColor: "rgba(54, 162, 235, 0.6)",
+        borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
       },
     ],
@@ -43,7 +43,7 @@ const BarGraph = () => {
       },
       title: {
         display: true,
-        text: "Monthly Student Data",
+        text: "Monthly Project Data",
       },
     },
     scales: {

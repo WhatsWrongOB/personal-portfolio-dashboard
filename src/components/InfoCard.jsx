@@ -1,5 +1,4 @@
 
-
 const InfoCard = ({ detail }) => {
   return (
     <div className="w-full lg:w-[32.55%] h-[158px] rounded-lg bg-gray-700 border border-gray-600 p-4">

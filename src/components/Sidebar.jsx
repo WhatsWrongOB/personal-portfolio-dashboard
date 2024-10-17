@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import menu from "/menu.svg";
 import { useStore } from "../context";
 import toast from "react-hot-toast";
+import ProfilePicView from "./ProfilePicView";
 
 const Sidebar = () => {
   const {
@@ -13,6 +14,7 @@ const Sidebar = () => {
   } = useStore();
   const [isOpen, setIsOpen] = useState(false);
   const [notification, setNotification] = useState(false);
+  const [isImageModalOpen, setImageModalOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -22,6 +24,10 @@ const Sidebar = () => {
       setUnreadCount(0);
     }
     setIsOpen(!isOpen);
+  };
+
+  const toggleImageModal = () => {
+    setImageModalOpen(!isImageModalOpen);
   };
 
   const isActive = (path) => location.pathname === path;
@@ -176,6 +182,25 @@ const Sidebar = () => {
             <i className="fa-solid fa-close"></i>
           </button>
         )}
+
+        <div className="absolute bottom-2 border-t-[1px] border-gray-500 py-3">
+          <div className="flex items-center gap-4">
+            <div
+              onClick={toggleImageModal}
+              className="w-[50px] h-[50px] rounded-full overflow-hidden cursor-pointer"
+            >
+              <img
+                className="w-full"
+                src="https://obaidbroimages.netlify.app/obaid.png"
+                alt="obaid"
+              />
+            </div>
+            <div>
+              <p className="text-sm">Obaid</p>
+              <p className="text-xs">obaidbro9@gmail.com</p>
+            </div>
+          </div>
+        </div>
       </aside>
 
       {isOpen && (
@@ -183,6 +208,14 @@ const Sidebar = () => {
           className="fixed inset-0 bg-black md:hidden opacity-50 z-5"
           onClick={toggleSidebar}
         ></div>
+      )}
+
+      {/* Modal for Enlarged Image */}
+      {isImageModalOpen && (
+        <ProfilePicView
+          picture={"https://obaidbroimages.netlify.app/obaid.png"}
+          toogleImageModal={toggleImageModal}
+        />
       )}
     </>
   );

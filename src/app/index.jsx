@@ -19,7 +19,7 @@ const RootApp = () => {
           id="overflow"
           className="w-full h-screen mt-[50px] md:mt-0 md:w-[95%] p-3 md:ml-[260px] overflow-auto"
         >
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={<Loader location="home" />}>
             <Routes>
               <Route element={<ProtectedRoute />}>
                 <Route path="/" element={<Dashboard />} />

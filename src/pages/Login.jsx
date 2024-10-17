@@ -4,6 +4,7 @@ import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useStore } from "../context";
 import toast from "react-hot-toast";
 import { useGetToken } from "../utils";
+import ProfilePicView from "../components/ProfilePicView";
 
 const Login = () => {
   const { login, loading } = useStore();
@@ -148,23 +149,10 @@ const Login = () => {
 
       {/* Modal for Enlarged Image */}
       {isImageModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-          <div className="relative">
-            {/* Enlarged Image */}
-            <img
-              src="https://obaidbroimages.netlify.app/obaid.png"
-              alt="Profile Enlarged"
-              className="w-96 h-96 rounded-full"
-            />
-            {/* Close Icon */}
-            <button
-              className="absolute top-2 right-2 text-white text-3xl font-bold cursor-pointer"
-              onClick={toggleImageModal}
-            >
-              &times;
-            </button>
-          </div>
-        </div>
+        <ProfilePicView
+          picture={"https://obaidbroimages.netlify.app/obaid.png"}
+          toogleImageModal={toggleImageModal}
+        />
       )}
     </div>
   );

@@ -22,11 +22,11 @@ ChartJS.register(
 
 const PieGraph = () => {
   const pieData = {
-    labels: ["Engineering", "Business", "Arts", "Science"],
+    labels: ["Javascript", "ReactJS", "NodeJs", "ExpressJs"],
     datasets: [
       {
-        label: "Student Distribution by Faculty",
-        data: [300, 150, 100, 250],
+        label: "Technical Skills Proficiency %",
+        data: [75, 70, 70, 70],
         backgroundColor: [
           "rgba(255, 99, 132, 0.6)",
           "rgba(54, 162, 235, 0.6)",
@@ -52,7 +52,7 @@ const PieGraph = () => {
       },
       title: {
         display: true,
-        text: "Student Distribution by Faculty",
+        text: "Technical Skill I have",
       },
     },
   };
