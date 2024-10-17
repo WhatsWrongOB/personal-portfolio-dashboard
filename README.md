@@ -2,5 +2,6 @@
 
 ## Screenshots
 
-![Dashboard Screenshot](dashboard.png)
+![Dashboard Screenshot](public/dashboard.png)
+
 
