@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "../routes";
 import Sidebar from "../components/Sidebar";
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
+import Loader from "../components/Loader";
 
 // Lazy loading components
 const Dashboard = lazy(() => import("../pages/Dashboard"));
@@ -18,14 +19,16 @@ const RootApp = () => {
           id="overflow"
           className="w-full h-screen mt-[50px] md:mt-0 md:w-[95%] p-3 md:ml-[260px] overflow-auto"
         >
-          <Routes>
-            <Route element={<ProtectedRoute />}>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/projects" element={<ProjectManagement />} />
-              <Route path="/skills" element={<SkillManagement />} />
-              <Route path="/report" element={<Report />} />
-            </Route>
-          </Routes>
+          <Suspense fallback={<Loader />}>
+            <Routes>
+              <Route element={<ProtectedRoute />}>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/projects" element={<ProjectManagement />} />
+                <Route path="/skills" element={<SkillManagement />} />
+                <Route path="/report" element={<Report />} />
+              </Route>
+            </Routes>
+          </Suspense>
         </main>
       </div>
     </>

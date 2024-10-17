@@ -49,7 +49,39 @@ body::-webkit-scrollbar,
 }
 
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0px 1000px #1F2937 inset; /* Background color to match your design */
-  -webkit-text-fill-color: #FFFFFF; /* Text color */
+  -webkit-box-shadow: 0 0 0px 1000px #1F2937 inset; 
+  -webkit-text-fill-color: #FFFFFF; 
   transition: background-color 5000s ease-in-out 0s;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px; 
+}
+
+.loading-circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #3498db;
+  animation: wave 1s infinite ease-in-out;
+}
+
+.loading-circle:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-circle:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes wave {
+  0%, 60%, 100% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.5);
+  }
 }
