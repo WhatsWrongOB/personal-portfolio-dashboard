@@ -3,11 +3,15 @@ const Loader = () => {
   return (
     <div
       id="modal"
-      className="fixed inset-0 z-50  bg-gray-800 bg-opacity-50 flex justify-center items-center"
+      className="fixed bg-gray-900 bg-opacity-50 inset-0 z-50 flex justify-center items-center"
     >
-     <p>Loading...</p>
+         <div className="loading-container">
+      <div className="loading-circle"></div>
+      <div className="loading-circle"></div>
+      <div className="loading-circle"></div>
     </div>
-  )
-}
+    </div>
+  );
+};
 
-export default Loader
+export default Loader;
