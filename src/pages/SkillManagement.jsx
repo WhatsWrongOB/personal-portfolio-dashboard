@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Modal from "../components/Modal";
 import { useStore } from "../context";
+import Loader from "../components/Loader";
 
 const SkillManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -8,7 +9,7 @@ const SkillManagement = () => {
   const [selectedskill, setSelectedskill] = useState(null);
   const [actionType, setactionType] = useState("");
 
-  const { skills, deleteSkill } = useStore();
+  const { skills, deleteSkill, loading } = useStore();
 
   const handleDeleteClick = (skill) => {
     setSelectedskill(skill);
@@ -39,6 +40,8 @@ const SkillManagement = () => {
   );
 
   return (
+    <>
+    {loading && <Loader location="home" />}
     <div
       id="overflow"
       className="w-full h-full rounded-lg bg-gray-700 border border-gray-600 p-4 overflow-auto"
@@ -123,6 +126,7 @@ const SkillManagement = () => {
         />
       )}
     </div>
+    </>
   );
 };
 

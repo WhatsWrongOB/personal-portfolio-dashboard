@@ -62,8 +62,8 @@ input:-webkit-autofill {
 }
 
 .loading-circle {
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   background-color: #3498db;
   animation: wave 1s infinite ease-in-out;

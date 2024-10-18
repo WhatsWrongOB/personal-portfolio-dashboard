@@ -1,11 +1,15 @@
+import Loader from "../components/Loader";
 import { useStore } from "../context";
 
 
 const Report = () => {
 
-const { messages } = useStore();
+const { messages, loading } = useStore();
 
   return (
+    <>
+    {loading && <Loader location="home" />}
+
     <div
       id="overflow"
       className="w-full h-full mt-2 rounded-lg bg-gray-700 border border-gray-600 p-4 overflow-auto"
@@ -22,6 +26,7 @@ const { messages } = useStore();
         ))}
       </div>
     </div>
+    </>
   );
 };
 

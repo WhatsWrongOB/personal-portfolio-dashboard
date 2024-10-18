@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useStore } from "../context/index";
 import ProjectModal from "../components/ProjectModal";
 import Modal from "../components/Modal";
+import Loader from "../components/Loader";
 
 const ProjectManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -9,7 +10,7 @@ const ProjectManagement = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [actionType, setActionType] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { projects, deleteProject } = useStore();
+  const { projects, deleteProject, loading } = useStore();
 
   const filteredProjects = projects.filter((project) =>
     project.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -19,6 +20,7 @@ const ProjectManagement = () => {
 
   return (
     <>
+      {loading && <Loader location="home" />}
       <div
         id="overflow"
         className="w-full h-full rounded-lg bg-gray-700 border border-gray-600 p-4 overflow-auto"

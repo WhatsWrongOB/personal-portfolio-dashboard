@@ -23,25 +23,33 @@ const AppProvider = ({ children }) => {
   const [notificationMessage, setNotificationMessage] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
-
   const token = useGetToken();
   const configuration = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  };
+  const loginConfiguration = {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
   };
+  const authorization = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
-  const handleNotification = useCallback((message) => {
-    setNotificationMessage((prev) => [...prev, message]);
-    setUnreadCount((prevCout) => prevCout + 1);
+  const handleNotification = (message) => {
     toast.success(message);
-  }, []);
+  };
 
   useEffect(() => {
     const savedNotifications =
       JSON.parse(localStorage.getItem("notificationMessages")) || [];
-    const unreadCount = localStorage.getItem("unreadCount");
+    const unreadCount = Number(localStorage.getItem("unreadCount"));
     setNotificationMessage(savedNotifications);
     setUnreadCount(unreadCount);
   }, []);
@@ -65,7 +73,7 @@ const AppProvider = ({ children }) => {
       const { data } = await axios.post(
         `${URL}/login`,
         credentials,
-        configuration
+        loginConfiguration
       );
       if (data.success) {
         localStorage.setItem("token", JSON.stringify(data.user));
@@ -73,7 +81,7 @@ const AppProvider = ({ children }) => {
         const formattedDate = now.toLocaleString("en-US");
         setNotificationMessage([
           ...notificationMessage,
-        `🔑 Login observed on ${formattedDate} from a device using ${getOSAndBrowser()} 🌐`
+          `🔑 Login observed on ${formattedDate} from a device using ${getOSAndBrowser()} 🌐`,
         ]);
         setUnreadCount((prev) => prev + 1);
         return data.success;
@@ -93,6 +101,7 @@ const AppProvider = ({ children }) => {
 
   const fetchProjects = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(`${URL}/projects`);
       if (data.success) {
         setProjects(data.projects);
@@ -100,18 +109,21 @@ const AppProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const createProject = async (project) => {
     try {
+      setLoading(true);
       const { data } = await axios.post(
         `${URL}/projects`,
         project,
         configuration
       );
       if (data.success) {
-        handleNotification(`${project.name} created successfully`);
+        handleNotification(`Project created successfully`);
         fetchProjects();
       }
     } catch (error) {
@@ -120,18 +132,21 @@ const AppProvider = ({ children }) => {
         "Error:",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   const updateProject = async (id, project) => {
     try {
+      setLoading(true);
       const { data } = await axios.patch(
         `${URL}/projects/${id}`,
         project,
         configuration
       );
       if (data.success) {
-        handleNotification(`${project.name} updated successfully ✨`);
+        handleNotification(`Project updated successfully ✨`);
         fetchProjects();
       }
     } catch (error) {
@@ -140,12 +155,18 @@ const AppProvider = ({ children }) => {
         "Error:",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   const deleteProject = async (id) => {
     try {
-      const { data } = await axios.delete(`${URL}/projects/${id}`);
+      setLoading(true);
+      const { data } = await axios.delete(
+        `${URL}/projects/${id}`,
+        authorization
+      );
       if (data.success) {
         handleNotification("Project deleted successfully 🗑️");
         fetchProjects();
@@ -156,6 +177,8 @@ const AppProvider = ({ children }) => {
         "Error:",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -163,6 +186,7 @@ const AppProvider = ({ children }) => {
 
   const fetchSkills = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(`${URL}/skills`);
       if (data.success) {
         setSkills(data.skills);
@@ -170,14 +194,17 @@ const AppProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const createSkill = async (skill) => {
     try {
+      setLoading(true);
       const { data } = await axios.post(`${URL}/skills`, skill, configuration);
       if (data.success) {
-        handleNotification(`${skill.name} created successfully 🎉`);
+        handleNotification(`Skill created successfully 🎉`);
         fetchSkills();
       }
     } catch (error) {
@@ -186,18 +213,21 @@ const AppProvider = ({ children }) => {
         "Error:",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   const updateSkill = async (id, skill) => {
     try {
+      setLoading(true);
       const { data } = await axios.patch(
         `${URL}/skills/${id}`,
         skill,
         configuration
       );
       if (data.success) {
-        handleNotification(`${skill.name} updated successfully ✨`);
+        handleNotification(`Skill updated successfully ✨`);
         fetchSkills();
       }
     } catch (error) {
@@ -206,12 +236,15 @@ const AppProvider = ({ children }) => {
         "Error:",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   const deleteSkill = async (id) => {
     try {
-      const { data } = await axios.delete(`${URL}/skills/${id}`);
+      setLoading(true);
+      const { data } = await axios.delete(`${URL}/skills/${id}`, authorization);
       if (data.success) {
         handleNotification("Skill deleted successfully 🗑️");
         fetchSkills();
@@ -222,6 +255,8 @@ const AppProvider = ({ children }) => {
         "Error:",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -229,6 +264,7 @@ const AppProvider = ({ children }) => {
 
   const fetchMessages = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(`${URL}/message`);
       if (data.success) {
         setMessages(data.messages.toReversed());
@@ -236,6 +272,8 @@ const AppProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error.message);
+    } finally {
+      setLoading(true);
     }
   };
 
