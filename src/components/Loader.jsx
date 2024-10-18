@@ -3,7 +3,7 @@ const Loader = ({ location = "login" }) => {
     <div
       id="modal"
       className={`fixed ${
-        location === "home" ? "bg-gray-800 bg-opacity-30 " : "bg-transparent"
+        location === "home" ? "bg-gray-800 bg-opacity-20 " : "bg-transparent"
       } inset-0 z-50 flex justify-center items-center`}
     >
       <div className="loading-container">

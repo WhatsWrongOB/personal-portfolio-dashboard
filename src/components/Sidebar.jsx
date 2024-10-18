@@ -98,7 +98,7 @@ const Sidebar = () => {
       <aside
         onClick={toggleSidebar}
         id="sidebar"
-        className={`w-[270px] md:w-[260px] bg-gray-800 text-white h-screen p-3 pl-4 fixed top-0 md:left-0 transition-transform duration-300 ${
+        className={`w-[270px] md:w-[260px] bg-gray-800 text-white h-screen p-3 md:pl-4 fixed top-0 md:left-0 transition-transform duration-300 ${
           isOpen ? "left-0" : "-left-[270px]"
         } md:left-0 z-10`}
       >

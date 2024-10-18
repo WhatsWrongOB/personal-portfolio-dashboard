@@ -71,7 +71,7 @@ const Login = () => {
         <h2 className="text-2xl font-bold text-center text-gray-200 mb-4">
           Welcome Back! 👋
         </h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} id="login">
           {/* Email Field */}
           <div className="mb-4 relative">
             <label

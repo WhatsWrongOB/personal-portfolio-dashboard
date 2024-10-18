@@ -48,7 +48,7 @@ body::-webkit-scrollbar,
   }
 }
 
-input:-webkit-autofill {
+#login input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px #1F2937 inset; 
   -webkit-text-fill-color: #FFFFFF; 
   transition: background-color 5000s ease-in-out 0s;
@@ -62,8 +62,8 @@ input:-webkit-autofill {
 }
 
 .loading-circle {
-  width: 15px;
-  height: 15px;
+  width: 17px;
+  height: 17px;
   border-radius: 50%;
   background-color: #3498db;
   animation: wave 1s infinite ease-in-out;
