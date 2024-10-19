@@ -1,7 +1,6 @@
 import axios from "axios";
 import {
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useState,
@@ -101,7 +100,6 @@ const AppProvider = ({ children }) => {
 
   const fetchProjects = async () => {
     try {
-      setLoading(true);
       const { data } = await axios.get(`${URL}/projects`);
       if (data.success) {
         setProjects(data.projects);
@@ -109,9 +107,7 @@ const AppProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error.message);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   const createProject = async (project) => {
@@ -186,7 +182,6 @@ const AppProvider = ({ children }) => {
 
   const fetchSkills = async () => {
     try {
-      setLoading(true);
       const { data } = await axios.get(`${URL}/skills`);
       if (data.success) {
         setSkills(data.skills);
@@ -194,9 +189,7 @@ const AppProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error.message);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   const createSkill = async (skill) => {
@@ -264,7 +257,6 @@ const AppProvider = ({ children }) => {
 
   const fetchMessages = async () => {
     try {
-      setLoading(true);
       const { data } = await axios.get(`${URL}/message`);
       if (data.success) {
         setMessages(data.messages.toReversed());
@@ -272,8 +264,6 @@ const AppProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error.message);
-    } finally {
-      setLoading(true);
     }
   };
 
