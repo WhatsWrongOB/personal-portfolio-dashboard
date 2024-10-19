@@ -11,6 +11,7 @@ const SkillManagement = lazy(() => import("../pages/SkillManagement"));
 const Report = lazy(() => import("../pages/Report"));
 
 const RootApp = () => {
+
   return (
     <>
       <div className="min-h-screen max-h-auto bg-gray-900 text-white flex justify-between relative">
