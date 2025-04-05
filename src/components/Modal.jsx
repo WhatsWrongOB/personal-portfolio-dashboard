@@ -3,7 +3,8 @@ import { useStore } from "../context";
 import Loader from "./Loader";
 
 const Modal = ({ data, onClose, type, accept }) => {
-  const { createProject, updateProject, createSkill, updateSkill, loading } = useStore();
+  const { createProject, updateProject, createSkill, updateSkill, loading } =
+    useStore();
   const [projectData, setProjectData] = useState({
     image: data?.image || "",
     name: data?.name || "",
@@ -11,6 +12,7 @@ const Modal = ({ data, onClose, type, accept }) => {
     type: data?.type || "",
     link: data?.link || "",
     description: data?.description || "",
+    priority: data?.priority || "",
   });
 
   const [skillData, setSkillData] = useState({
@@ -67,6 +69,7 @@ const Modal = ({ data, onClose, type, accept }) => {
       formData.append("type", projectData.type);
       formData.append("link", projectData.link);
       formData.append("description", projectData.description);
+      formData.append("priority", projectData.priority);
       updateProject(data._id, formData);
     } else if (type === "edit-skill") {
       const formData = new FormData();
@@ -83,6 +86,7 @@ const Modal = ({ data, onClose, type, accept }) => {
       formData.append("type", projectData.type);
       formData.append("link", projectData.link);
       formData.append("description", projectData.description);
+      formData.append("priority", projectData.priority);
       createProject(formData);
     } else if (type === "add-skill") {
       const formData = new FormData();
@@ -94,7 +98,7 @@ const Modal = ({ data, onClose, type, accept }) => {
       createSkill(formData);
     }
 
-      onClose();
+    onClose();
   };
 
   return (
@@ -176,6 +180,24 @@ const Modal = ({ data, onClose, type, accept }) => {
                     className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
+                <div>
+                  <label
+                    className="block text-sm font-semibold mb-1"
+                    htmlFor="name"
+                  >
+                    Show Priority
+                  </label>
+                  <input
+                    name="priority"
+                    type="number"
+                    value={projectData.priority}
+                    onChange={handleProjectChange}
+                    placeholder="Enter Project Priority"
+                    className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+
                 <div>
                   <label
                     className="block text-sm font-semibold mb-1"
